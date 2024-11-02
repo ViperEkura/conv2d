@@ -47,7 +47,10 @@ int main(int argc, char**argv){
     cudaMemcpy(pIn_device, pIn, n*c*h*w*sizeof(float),cudaMemcpyHostToDevice);
     cudaMemcpy(pWeight_device,pWeight,k*c*r*s*sizeof(float),cudaMemcpyHostToDevice);
     cudaMemcpy(pOut_device,pOut, n*k*outh*outw*sizeof(float),cudaMemcpyHostToDevice);
-   
+
+    void (*launch_func)(param_t);
+    launch_func = launch_winograd;
+    
     /*****************************step 1*****************************/
     param_t param;
     param.in        = pIn_device;        
@@ -74,7 +77,7 @@ int main(int argc, char**argv){
     launch_verify(param);
     cudaMemcpy(pOut_verify, pOut_device,  n*k*outh*outw*sizeof(float), cudaMemcpyDeviceToHost);
 
-    launch_winograd(param);
+    launch_func(param);
     cudaMemcpy(pOut, pOut_device,  n*k*outh*outw*sizeof(float), cudaMemcpyDeviceToHost);
 
     /*******************************cost time test************************************/
@@ -88,7 +91,7 @@ int main(int argc, char**argv){
     int iternum = 100;
 
     for(int i=0; i<iternum; i++){
-        launch_winograd(param);
+        launch_func(param);
     }
 
     cudaEventRecord(stop,0);
