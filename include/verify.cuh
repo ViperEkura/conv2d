@@ -2,7 +2,7 @@
 #define VERIFY_CUH
 #include "defines.h"
 
-__global__ void conv2d_verofy(param_t param){
+__global__ void conv2d_verify(param_t param){
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
     int z = blockIdx.z;
@@ -75,7 +75,7 @@ void launch_verify(param_t param){
 
     dim3 block(blockx, blocky, blockz);
     dim3 thread(threadx, thready, threadz);
-    conv2d_verofy<<<block, thread>>>(param);
+    conv2d_verify<<<block, thread>>>(param);
 }
 
 #endif
