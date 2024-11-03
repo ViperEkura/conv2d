@@ -1,8 +1,12 @@
 #include "include/defines.h"
 #include "include/verify.cuh"
 #include "include/winograd.cuh"
+#include "include/implgemm.cuh"
 
 #include <stdio.h>
+
+void (*launch_func)(param_t) = launch_winograd;
+// 选择测试用的启动函数类型
 
 int main(int argc, char**argv){
     int n = atoi(argv[1]);
@@ -48,9 +52,7 @@ int main(int argc, char**argv){
     cudaMemcpy(pWeight_device,pWeight,k*c*r*s*sizeof(float),cudaMemcpyHostToDevice);
     cudaMemcpy(pOut_device,pOut, n*k*outh*outw*sizeof(float),cudaMemcpyHostToDevice);
 
-    void (*launch_func)(param_t);
-    launch_func = launch_winograd;
-    
+
     /*****************************step 1*****************************/
     param_t param;
     param.in        = pIn_device;        
