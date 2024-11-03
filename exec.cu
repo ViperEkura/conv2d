@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-void (*launch_func)(param_t) = launch_winograd;
+void (*launch_func)(param_t) = launch_implgemm;
 // 选择测试用的启动函数类型
 
 int main(int argc, char**argv){

@@ -1,3 +1,6 @@
+#ifndef IMPLGEMM_CUH
+#define IMPLGEMM_CUH
+
 #include "defines.h"
 
 __global__ void implgemm(param_t param)
@@ -268,3 +271,5 @@ void launch_implgemm(param_t param)
     dim3 grid(blockx, blocky, blockz);
     implgemm<<<grid, block>>>(param);
 }
+
+#endif
