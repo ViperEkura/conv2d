@@ -5,8 +5,7 @@
 __device__ void winograd_4x4_3x3(float* g, float* d,  float* o){
     //g[3,3], d[6, 6], o[4, 4]
     int pos = 0, org_pos = 0;
-    for(int x=0;x<4;++x){
-        org_pos = x * 6;
+    for(;org_pos < 24; org_pos += 6){
         o[pos] += g[0] * d[org_pos] + g[1] * d[org_pos+ 1] + g[2] * d[org_pos + 2];
         o[pos] += g[3] * d[org_pos + 6] + g[4] * d[org_pos + 7] + g[5] * d[org_pos + 8];
         o[pos] += g[6] * d[org_pos + 12] + g[7] * d[org_pos + 13] + g[8] * d[org_pos + 14];
