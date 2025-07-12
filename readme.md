@@ -44,7 +44,7 @@ int n, int c, int h, int w, int k, int r, int s, int u, int v,  int p, int q)
                         }
                     }
 
-                    pout[nNum*k*oh*ow + kNum*oh*ow + i*ow + j] = (_Float16)sum;
+                    pout[nNum*k*oh*ow + kNum*oh*ow + i*ow + j] = (float)sum;
                 }
             }
         }
