@@ -5,26 +5,25 @@
 __device__ void winograd_4x4_3x3(float* g, float* d,  float* o){
     //g[3,3], d[6, 6], o[4, 4]
     int pos = 0, org_pos = 0;
-    for(;org_pos < 24; org_pos += 6){
-        o[pos] += g[0] * d[org_pos] + g[1] * d[org_pos+ 1] + g[2] * d[org_pos + 2];
-        o[pos] += g[3] * d[org_pos + 6] + g[4] * d[org_pos + 7] + g[5] * d[org_pos + 8];
-        o[pos] += g[6] * d[org_pos + 12] + g[7] * d[org_pos + 13] + g[8] * d[org_pos + 14];
+    
+    for(;org_pos < 24; org_pos += 6, pos += 4){
+        o[pos] = g[0] * d[org_pos] + g[1] * d[org_pos+ 1] + g[2] * d[org_pos + 2] \
+                   + g[3] * d[org_pos + 6] + g[4] * d[org_pos + 7] + g[5] * d[org_pos + 8] \
+                   + g[6] * d[org_pos + 12] + g[7] * d[org_pos + 13] + g[8] * d[org_pos + 14];
 
-        o[pos + 1] += g[0] * d[org_pos + 1] + g[1] * d[org_pos+ 2] + g[2] * d[org_pos + 3];
-        o[pos + 1] += g[3] * d[org_pos + 7] + g[4] * d[org_pos + 8] + g[5] * d[org_pos + 9];
-        o[pos + 1] += g[6] * d[org_pos + 13] + g[7] * d[org_pos + 14] + g[8] * d[org_pos + 15];
+        o[pos + 1] = g[0] * d[org_pos + 1] + g[1] * d[org_pos+ 2] + g[2] * d[org_pos + 3] \
+                    + g[3] * d[org_pos + 7] + g[4] * d[org_pos + 8] + g[5] * d[org_pos + 9] \
+                    + g[6] * d[org_pos + 13] + g[7] * d[org_pos + 14] + g[8] * d[org_pos + 15];
 
-        o[pos + 2] += g[0] * d[org_pos + 2] + g[1] * d[org_pos+ 3] + g[2] * d[org_pos + 4];
-        o[pos + 2] += g[3] * d[org_pos + 8] + g[4] * d[org_pos + 9] + g[5] * d[org_pos + 10];
-        o[pos + 2] += g[6] * d[org_pos + 14] + g[7] * d[org_pos + 15] + g[8] * d[org_pos + 16];
+        o[pos + 2] = g[0] * d[org_pos + 2] + g[1] * d[org_pos+ 3] + g[2] * d[org_pos + 4] \
+                    + g[3] * d[org_pos + 8] + g[4] * d[org_pos + 9] + g[5] * d[org_pos + 10] \
+                    + g[6] * d[org_pos + 14] + g[7] * d[org_pos + 15] + g[8] * d[org_pos + 16];
 
-        o[pos + 3] += g[0] * d[org_pos + 3] + g[1] * d[org_pos+ 4] + g[2] * d[org_pos + 5];
-        o[pos + 3] += g[3] * d[org_pos + 9] + g[4] * d[org_pos + 10] + g[5] * d[org_pos + 11];
-        o[pos + 3] += g[6] * d[org_pos + 15] + g[7] * d[org_pos + 16] + g[8] * d[org_pos + 17];
-        pos+=4;
+        o[pos + 3] = g[0] * d[org_pos + 3] + g[1] * d[org_pos+ 4] + g[2] * d[org_pos + 5] \
+                    + g[3] * d[org_pos + 9] + g[4] * d[org_pos + 10] + g[5] * d[org_pos + 11] \
+                    + g[6] * d[org_pos + 15] + g[7] * d[org_pos + 16] + g[8] * d[org_pos + 17];
     }
 }
-
 extern "C" __global__ void conv2d_winograd(param_t param){
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
